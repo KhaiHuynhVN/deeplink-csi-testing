@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSI Mobile - Test Deep Links</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #273c75;
+            width: 100%;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: #7f8fa6;
+        }
+        
+        .link-cards {
+            display: grid;
+            grid-gap: 20px;
+            width: 100%;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #273c75;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-color: #273c75;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+        }
+        
+        .card p {
+            margin-bottom: 20px;
+            color: #7f8fa6;
+            font-size: 0.9rem;
+        }
+        
+        .link-container {
+            background-color: #f1f2f6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+            position: relative;
+            padding-right: 60px; /* Space for the copy button */
+        }
+        
+        .link-text {
+            font-family: monospace;
+            color: #273c75;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #273c75;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .copy-button:hover {
+            background-color: #1e3799;
+        }
+        
+        .open-button {
+            display: inline-block;
+            background-color: #273c75;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .open-button:hover {
+            background-color: #1e3799;
+        }
+        
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #7f8fa6;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                margin-bottom: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            header p {
+                font-size: 0.9rem;
+            }
+            
+            .card h2 {
+                font-size: 1.2rem;
+            }
+            
+            .card p {
+                font-size: 0.8rem;
+            }
+            
+            .link-text {
+                font-size: 0.75rem;
+            }
+            
+            .open-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .qr-code img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .qr-code p {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card {
+                padding: 12px;
+            }
+            
+            .card-icon {
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
+                font-size: 0.8rem;
+            }
+            
+            .link-container {
+                padding: 10px;
+                padding-right: 55px;
+            }
+            
+            .copy-button {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .qr-code img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSI Mobile - Test Deep Links</h1>
+            <p>Nhấn vào các nút bên dưới để kiểm tra các loại deep link khác nhau</p>
+        </header>
+        
+        <div class="link-cards">
+            <!-- Normal Link -->
+            <div class="card">
+                <h2><span class="card-icon">1</span>Link Thường</h2>
+                <p>Deep link cơ bản với token đơn giản</p>
+                
+                <div class="link-container">
+                    <span class="link-text">https://vncsi.go.link/login?adj_t=1nzo6p0p</span>
+                    <button class="copy-button" onclick="copyToClipboard(event, 'normal-link')">Copy</button>
+                </div>
+                
+                <a href="https://vncsi.go.link/login?adj_t=1nzo6p0p" class="open-button" target="_blank">Mở Link</a>
+                
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://vncsi.go.link/login?adj_t=1nzo6p0p" alt="QR Code Normal Link">
+                    <p>Quét mã QR để mở trên thiết bị di động</p>
+                </div>
+            </div>
+            
+            <!-- Short Link -->
+            <div class="card">
+                <h2><span class="card-icon">2</span>Link Rút Gọn</h2>
+                <p>Deep link đã được rút gọn để dễ sử dụng</p>
+                
+                <div class="link-container">
+                    <span class="link-text">https://vncsi.go.link/aE8Iw</span>
+                    <button class="copy-button" onclick="copyToClipboard(event, 'short-link')">Copy</button>
+                </div>
+                
+                <a href="https://vncsi.go.link/aE8Iw" class="open-button" target="_blank">Mở Link</a>
+                
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://vncsi.go.link/aE8Iw" alt="QR Code Short Link">
+                    <p>Quét mã QR để mở trên thiết bị di động</p>
+                </div>
+            </div>
+            
+            <!-- Full Link -->
+            <div class="card">
+                <h2><span class="card-icon">3</span>Link Đầy Đủ</h2>
+                <p>Deep link đầy đủ với thông tin chiến dịch và metadata</p>
+                
+                <div class="link-container">
+                    <span class="link-text" id="full-link">https://vncsi.go.link/login?adj_t=1nzo6p0p&adj_campaign=CSI_ekyc_deeplink&adj_og_title=CSI+Mobile&adj_og_image=https%3A%2F%2Fis1-ssl.mzstatic.com%2Fimage%2Fthumb%2FPurple221%2Fv4%2Fe0%2F0b%2F5a%2Fe00b5a21-9db0-a262-658f-001fc6ac3e84%2FAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png%2F200x200.png</span>
+                    <button class="copy-button" onclick="copyToClipboard(event, 'full-link')">Copy</button>
+                </div>
+                
+                <a href="https://vncsi.go.link/login?adj_t=1nzo6p0p&adj_campaign=CSI_ekyc_deeplink&adj_og_title=CSI+Mobile&adj_og_image=https%3A%2F%2Fis1-ssl.mzstatic.com%2Fimage%2Fthumb%2FPurple221%2Fv4%2Fe0%2F0b%2F5a%2Fe00b5a21-9db0-a262-658f-001fc6ac3e84%2FAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png%2F200x200.png" class="open-button" target="_blank">Mở Link</a>
+                
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://vncsi.go.link/login?adj_t=1nzo6p0p&adj_campaign=CSI_ekyc_deeplink&adj_og_title=CSI+Mobile&adj_og_image=https%3A%2F%2Fis1-ssl.mzstatic.com%2Fimage%2Fthumb%2FPurple221%2Fv4%2Fe0%2F0b%2F5a%2Fe00b5a21-9db0-a262-658f-001fc6ac3e84%2FAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png%2F200x200.png" alt="QR Code Full Link">
+                    <p>Quét mã QR để mở trên thiết bị di động</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 CSI Mobile - Deep Link Testing</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Function to copy link to clipboard - kết hợp cả hai phương pháp
+        function copyToClipboard(event, linkId) {
+            let text = '';
+            
+            if (linkId === 'normal-link') {
+                text = 'https://vncsi.go.link/login?adj_t=1nzo6p0p';
+            } else if (linkId === 'short-link') {
+                text = 'https://vncsi.go.link/aE8Iw';
+            } else if (linkId === 'full-link') {
+                text = 'https://vncsi.go.link/login?adj_t=1nzo6p0p&adj_campaign=CSI_ekyc_deeplink&adj_og_title=CSI+Mobile&adj_og_image=https%3A%2F%2Fis1-ssl.mzstatic.com%2Fimage%2Fthumb%2FPurple221%2Fv4%2Fe0%2F0b%2F5a%2Fe00b5a21-9db0-a262-658f-001fc6ac3e84%2FAppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png%2F200x200.png';
+            }
+
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Lưu trữ vị trí cuộn hiện tại
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+            
+            button.textContent = 'Đã copy!';
+
+            // Thử sử dụng clipboard API nếu có sẵn
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        // thành công
+                    })
+                    .catch(() => {
+                        // Nếu API thất bại, dùng textarea nhưng tối ưu hóa
+                        copyUsingTextArea();
+                    });
+            } else {
+                // Nếu API không có sẵn, dùng textarea
+                copyUsingTextArea();
+            }
+            
+            // Phương pháp sao chép bằng textarea được tối ưu
+            function copyUsingTextArea() {
+                // Tạo textarea nhưng thêm nhiều thuộc tính để tránh vấn đề UI
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                
+                // Tránh thay đổi giao diện
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '0';
+                textarea.style.opacity = '0';
+                textarea.style.height = '1px';
+                textarea.style.width = '1px';
+                textarea.style.padding = '0';
+                textarea.style.border = 'none';
+                textarea.style.outline = 'none';
+                textarea.style.boxShadow = 'none';
+                textarea.style.background = 'transparent';
+                
+                // Tránh hiển thị bàn phím trên mobile
+                textarea.setAttribute('readonly', 'readonly');
+                
+                document.body.appendChild(textarea);
+                
+                // Trong iOS phiên bản cũ, textarea cần được hiển thị
+                if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+                    textarea.contentEditable = true;
+                    textarea.readOnly = false;
+                }
+                
+                // Select text và copy
+                textarea.select();
+                textarea.setSelectionRange(0, 99999);
+                
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Lỗi sao chép: ', err);
+                }
+                
+                // Xóa textarea
+                document.body.removeChild(textarea);
+                
+                // Khôi phục vị trí cuộn
+                window.scrollTo(scrollX, scrollY);
+            }
+            
+            // Khôi phục trạng thái nút
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }
+        
+        // Đăng ký sự kiện touch cho mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-button');
+            copyButtons.forEach(button => {
+                button.addEventListener('touchend', function(e) {
+                    const onclickAttr = this.getAttribute('onclick');
+                    if (onclickAttr) {
+                        const match = onclickAttr.match(/'([^']+)'/);
+                        if (match && match[1]) {
+                            e.preventDefault();
+                            copyToClipboard(e, match[1]);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
